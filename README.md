@@ -49,9 +49,9 @@ npm install
 
 ### 2. Backend — ASP.NET Core API
 
+Aşağıdakı linki Visual Studio-da clone edin
 ```bash
 git clone https://github.com/fehminqurbanli/StudentExamManagementSystem.git
-cd student-exam-demo
 ```
 
 #### 2.1. Verilənlər bazası bağlantısını konfiqurasiya edin
