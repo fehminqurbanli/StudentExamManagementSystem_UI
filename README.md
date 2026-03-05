@@ -24,8 +24,7 @@ Layihəni işlətməzdən əvvəl aşağıdakı proqramların quraşdırılmış
 
 | Proqram | Versiya | Yükləmə linki |
 |---|---|---|
-| .NET SDK | 8.0+ | https://dotnet.microsoft.com/download |
-| Node.js | 18.0+ | https://nodejs.org |
+| .NET SDK | 9.0+ | https://dotnet.microsoft.com/download |
 | Angular CLI | 17.0+ | `npm install -g @angular/cli` |
 | SQL Server | istənilən | https://www.microsoft.com/sql-server |
 | Git | istənilən | https://git-scm.com |
