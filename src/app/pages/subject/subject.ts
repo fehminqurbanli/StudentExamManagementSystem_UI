@@ -21,7 +21,8 @@ import { Subject } from '../../models/subject.model';
     MatCardModule, MatSnackBarModule, MatTooltipModule,
     MatProgressSpinnerModule
   ],
-  templateUrl: './subject.html'
+  templateUrl: './subject.html',
+  styleUrls: ['./subject.css']
 })
 export class SubjectComponent implements OnInit {
   private subjectService = inject(SubjectService);
@@ -50,20 +51,37 @@ export class SubjectComponent implements OnInit {
     });
   }
 
-  add() {
-    if (!this.new.code || !this.new.name) {
-      this.snack.open('Kod və Ad mütləq doldurulmalıdır!', '✕', { duration: 3000 });
-      return;
-    }
+selectedId: number | null = null;
+
+ add() {
+
+  if (!this.new.code || !this.new.name) {
+    this.snack.open('Kod və Ad doldurulmalıdır!', '✕', { duration: 3000 });
+    return;
+  }
+
+  if (this.selectedId !== null) {
+    this.subjectService.update(this.selectedId, this.new).subscribe({
+      next: () => {
+        this.snack.open('✓ Dərs yeniləndi', '', { duration: 2000 });
+        this.selectedId = null;
+        this.new = { code: '', name: '', class: 0, teacherName: '', teacherSurname: '' };
+        this.load();
+      },
+      error: () => this.snack.open('Yeniləmə xətası!', '✕', { duration: 3000 })
+    });
+  } 
+  else {
     this.subjectService.add(this.new).subscribe({
       next: () => {
         this.snack.open('✓ Dərs əlavə edildi', '', { duration: 2000 });
-        this.new = { id:0, code: '', name: '', class: 0, teacherName: '', teacherSurname: '' };
+        this.new = { code: '', name: '', class: 0, teacherName: '', teacherSurname: '' };
         this.load();
       },
       error: () => this.snack.open('Xəta baş verdi!', '✕', { duration: 3000 })
     });
   }
+}
 
   delete(id: number) {
     this.subjectService.delete(id).subscribe({
@@ -74,4 +92,20 @@ export class SubjectComponent implements OnInit {
       error: () => this.snack.open('Silmə xətası!', '✕', { duration: 3000 })
     });
   }
+
+  edit(subject: Subject) {
+  this.selectedId = subject.id!;
+  this.new = {
+    code: subject.code,
+    name: subject.name,
+    class: subject.class,
+    teacherName: subject.teacherName,
+    teacherSurname: subject.teacherSurname
+  };
+}
+
+ignore() {
+  this.selectedId = null;
+  this.new = { code: '', name: '', class: 0, teacherName: '', teacherSurname: '' };
+}
 }

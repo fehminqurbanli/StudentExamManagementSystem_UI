@@ -1,1 +1,120 @@
-<p>student works!</p>
+<mat-card class="subject-card" [style.border]="selectedId ? '2px solid #1976d2' : 'none'">
+
+  <mat-card-header>
+    <mat-icon mat-card-avatar>school</mat-icon>
+
+    <mat-card-title>
+      {{ selectedId ? 'Şagirdi Düzəliş Et' : 'Şagirdlər' }}
+    </mat-card-title>
+
+    <mat-card-subtitle>
+      {{ selectedId ? 'Məlumatları yeniləyin' : 'Yeni şagird əlavə edin' }}
+    </mat-card-subtitle>
+  </mat-card-header>
+
+  <mat-card-content>
+
+    <!-- FORM -->
+    <div class="form-grid">
+
+      <mat-form-field appearance="outline">
+        <mat-label>Şagird nömrəsi</mat-label>
+        <input matInput type="number" [(ngModel)]="new.studentNumber" min="0" max="99999">
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Ad</mat-label>
+        <input matInput [(ngModel)]="new.name" maxlength="30">
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Soyad</mat-label>
+        <input matInput [(ngModel)]="new.surname" maxlength="30">
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Sinif</mat-label>
+        <input matInput type="number" [(ngModel)]="new.class" min="1" max="11">
+      </mat-form-field>
+
+      <div class="button-group">
+
+        <button mat-raised-button color="primary" (click)="add()">
+          <mat-icon>{{ selectedId ? 'save' : 'person_add' }}</mat-icon>
+          {{ selectedId ? 'Yenilə' : 'Əlavə Et' }}
+        </button>
+
+        @if (selectedId) {
+          <button mat-stroked-button color="warn" (click)="ignore()">
+            <mat-icon>close</mat-icon>
+            Ləğv et
+          </button>
+        }
+
+      </div>
+
+    </div>
+
+    <!-- LOADING -->
+    @if (loading()) {
+      <div class="loading">
+        <mat-spinner diameter="40"></mat-spinner>
+      </div>
+    }
+
+    <!-- TABLE -->
+    @else {
+
+      <div class="table-container">
+        <table mat-table [dataSource]="students()" class="mat-elevation-z3">
+
+          <ng-container matColumnDef="studentNumber">
+            <th mat-header-cell *matHeaderCellDef>Nömrə</th>
+            <td mat-cell *matCellDef="let s"><strong>{{s.studentNumber}}</strong></td>
+          </ng-container>
+
+          <ng-container matColumnDef="name">
+            <th mat-header-cell *matHeaderCellDef>Ad</th>
+            <td mat-cell *matCellDef="let s">{{s.name}}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="surname">
+            <th mat-header-cell *matHeaderCellDef>Soyad</th>
+            <td mat-cell *matCellDef="let s">{{s.surname}}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="class">
+            <th mat-header-cell *matHeaderCellDef>Sinif</th>
+            <td mat-cell *matCellDef="let s">{{s.class}}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="actions">
+            <th mat-header-cell *matHeaderCellDef></th>
+            <td mat-cell *matCellDef="let s" class="action-buttons">
+
+              <button mat-icon-button color="primary" (click)="edit(s)" matTooltip="Düzəliş et">
+                <mat-icon>edit</mat-icon>
+              </button>
+
+              <button mat-icon-button color="warn" (click)="delete(s.id!)" matTooltip="Sil">
+                <mat-icon>delete</mat-icon>
+              </button>
+
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="columns"></tr>
+          <tr mat-row *matRowDef="let row; columns: columns"></tr>
+
+        </table>
+      </div>
+
+      @if (students().length === 0) {
+        <p class="empty-text">Hələ şagird əlavə edilməyib</p>
+      }
+
+    }
+
+  </mat-card-content>
+
+</mat-card>

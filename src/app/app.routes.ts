@@ -9,10 +9,10 @@ export const routes: Routes = [
   },
   {
     path: 'students',
-    loadComponent: () => import('./pages/student/student').then(m => m.Student)
+    loadComponent: () => import('./pages/student/student').then(m => m.StudentComponent)
   },
   {
     path: 'exams',
-    loadComponent: () => import('./pages/exam/exam').then(m => m.Exam)
+    loadComponent: () => import('./pages/exam/exam').then(m => m.ExamComponent)
   }
 ];

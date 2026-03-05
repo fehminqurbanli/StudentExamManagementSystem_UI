@@ -21,7 +21,10 @@ export class SubjectService {
     return this.http.delete<void>(`${this.url}/${id}`);
   }
 
-  getByKod(id: number): Observable<Subject> {
+  getById(id: number): Observable<Subject> {
     return this.http.get<Subject>(`${this.url}/${id}`);
   }
+  update(id: number, subject: Subject): Observable<void> {
+  return this.http.put<void>(`${this.url}/${id}`, subject);
+}
 }

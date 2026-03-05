@@ -1,1 +1,139 @@
-<p>exam works!</p>
+<mat-card class="subject-card" [style.border]="selectedId ? '2px solid #1976d2' : 'none'">
+
+  <mat-card-header>
+    <mat-icon mat-card-avatar>assignment</mat-icon>
+
+    <mat-card-title>
+      {{ selectedId ? 'İmtahanı Düzəliş Et' : 'İmtahanlar' }}
+    </mat-card-title>
+
+    <mat-card-subtitle>
+      {{ selectedId ? 'Məlumatları yeniləyin' : 'Yeni imtahan əlavə edin' }}
+    </mat-card-subtitle>
+  </mat-card-header>
+
+  <mat-card-content>
+
+    <!-- FORM -->
+    <div class="form-grid">
+
+      <!-- Subject Selectbox -->
+      <mat-form-field appearance="outline">
+        <mat-label>Fənn</mat-label>
+        <mat-select [(ngModel)]="new.subjectId">
+          <mat-option [value]="0" disabled>Fənn seçin</mat-option>
+          <mat-option *ngFor="let s of subjects()" [value]="s.id">
+            {{ s.name }} ({{ s.code }})
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <!-- Student Selectbox -->
+      <mat-form-field appearance="outline">
+        <mat-label>Şagird</mat-label>
+        <mat-select [(ngModel)]="new.studentId">
+          <mat-option [value]="0" disabled>Şagird seçin</mat-option>
+          <mat-option *ngFor="let s of students()" [value]="s.id">
+            {{ s.name }} {{ s.surname }} ({{ s.studentNumber }})
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <!-- Tarix -->
+      <mat-form-field appearance="outline">
+        <mat-label>İmtahan tarixi</mat-label>
+        <input matInput [matDatepicker]="dp" [(ngModel)]="new.examDate">
+        <mat-datepicker-toggle matSuffix [for]="dp"></mat-datepicker-toggle>
+        <mat-datepicker #dp></mat-datepicker>
+      </mat-form-field>
+
+      <!-- Qiymət -->
+      <mat-form-field appearance="outline" style="width: 110px">
+        <mat-label>Qiymət</mat-label>
+        <mat-select [(ngModel)]="new.grade">
+          <mat-option *ngFor="let g of grades" [value]="g">{{ g }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <div class="button-group">
+        <button mat-raised-button color="primary" (click)="add()">
+          <mat-icon>{{ selectedId ? 'save' : 'add_task' }}</mat-icon>
+          {{ selectedId ? 'Yenilə' : 'Əlavə Et' }}
+        </button>
+
+        @if (selectedId) {
+          <button mat-stroked-button color="warn" (click)="ignore()">
+            <mat-icon>close</mat-icon>
+            Ləğv et
+          </button>
+        }
+      </div>
+
+    </div>
+
+    <!-- LOADING -->
+    @if (loading()) {
+      <div class="loading">
+        <mat-spinner diameter="40"></mat-spinner>
+      </div>
+    }
+
+    <!-- TABLE -->
+    @else {
+      <div class="table-container">
+        <table mat-table [dataSource]="exams()" class="mat-elevation-z3">
+
+          <ng-container matColumnDef="subject">
+            <th mat-header-cell *matHeaderCellDef>Fənn</th>
+            <td mat-cell *matCellDef="let e">
+              <strong>{{ getSubjectName(e.subjectId) }}</strong>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="student">
+            <th mat-header-cell *matHeaderCellDef>Şagird</th>
+            <td mat-cell *matCellDef="let e">{{ getStudentName(e.studentId) }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="examDate">
+            <th mat-header-cell *matHeaderCellDef>Tarix</th>
+            <td mat-cell *matCellDef="let e">{{ e.examDate | date:'dd.MM.yyyy' }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="grade">
+            <th mat-header-cell *matHeaderCellDef>Qiymət</th>
+            <td mat-cell *matCellDef="let e">
+              <span class="grade-chip" [ngClass]="gradeClass(e.grade)">
+                {{ e.grade }}
+              </span>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="actions">
+            <th mat-header-cell *matHeaderCellDef></th>
+            <td mat-cell *matCellDef="let e" class="action-buttons">
+
+              <button mat-icon-button color="primary" (click)="edit(e)" matTooltip="Düzəliş et">
+                <mat-icon>edit</mat-icon>
+              </button>
+
+              <button mat-icon-button color="warn" (click)="delete(e.id!)" matTooltip="Sil">
+                <mat-icon>delete</mat-icon>
+              </button>
+
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="columns"></tr>
+          <tr mat-row *matRowDef="let row; columns: columns"></tr>
+
+        </table>
+      </div>
+
+      @if (exams().length === 0) {
+        <p class="empty-text">Hələ imtahan əlavə edilməyib</p>
+      }
+    }
+
+  </mat-card-content>
+</mat-card>
