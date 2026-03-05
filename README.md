@@ -9,11 +9,11 @@ Layihə **ASP.NET Core Web API** (backend) və **Angular** (frontend) texnologiy
 
 ```
 /
-├── StudentExamDemo.API/        → ASP.NET Core Web API (backend)
-├── StudentExamDemo.Application/→ Servis və DTO-lar
-├── StudentExamDemo.Domain/     → Entity-lər (modellər)
+├── StudentExamDemo.API/            → ASP.NET Core Web API (backend)
+├── StudentExamDemo.Application/    → Servis və DTO-lar
+├── StudentExamDemo.Domain/         → Entity-lər (modellər)
 ├── StudentExamDemo.Infrastructure/ → DbContext, Migration-lar
-└── client/                     → Angular frontend
+└── client/                         → Angular frontend
 ```
 
 ---
@@ -25,6 +25,7 @@ Layihəni işlətməzdən əvvəl aşağıdakı proqramların quraşdırılmış
 | Proqram | Versiya | Yükləmə linki |
 |---|---|---|
 | .NET SDK | 9.0+ | https://dotnet.microsoft.com/download |
+| Node.js | 18.0+ | https://nodejs.org/en/download |
 | Angular CLI | 17.0+ | `npm install -g @angular/cli` |
 | SQL Server | istənilən | https://www.microsoft.com/sql-server |
 | Git | istənilən | https://git-scm.com |
@@ -33,13 +34,14 @@ Layihəni işlətməzdən əvvəl aşağıdakı proqramların quraşdırılmış
 
 ## 🚀 Quraşdırma və İşə Salma
 
-### 1. Frontend - Kodu Clone edin
+### 1. Frontend — Kodu Clone edin
 
 ```bash
 git clone https://github.com/fehminqurbanli/StudentExamManagementSystem_UI.git
 cd StudentExamManagementSystem_UI
 ```
-Əgər kompüterə node.js quraşdırılmayıbsa https://nodejs.org/en/download yüklənməlidir. Daha sonra aşağıdakılar quraşdırılacaq:
+
+Asılılıqları quraşdırın:
 
 ```bash
 npm install -g @angular/cli
@@ -50,8 +52,9 @@ npm install
 
 ### 2. Backend — ASP.NET Core API
 
-Aşağıdakı linki Visual Studio-da clone edin
-```bash
+Aşağıdakı linki Visual Studio-da clone edin:
+
+```
 https://github.com/fehminqurbanli/StudentExamManagementSystem.git
 ```
 
@@ -62,14 +65,16 @@ https://github.com/fehminqurbanli/StudentExamManagementSystem.git
 ```json
 {
   "ConnectionStrings": {
-    "StudentExamConnection": "Server=localhost\\SQLEXPRESS;Database=StudentExamDemoDb;Trusted_Connection=True;TrustServerCertificate=True;"
+    "StudentExamConnection": "Server=YOUR_SERVER_NAME;Database=StudentExamDemoDb;Trusted_Connection=True;TrustServerCertificate=True;"
   }
 }
 ```
 
 > 💡 `YOUR_SERVER_NAME` əvəzinə SQL Server adınızı yazın. Məsələn: `localhost\SQLEXPRESS` və ya `.\SQLEXPRESS`
 
-#### 2.2. Migration-ların tətbiqi -> Proyekt run olduqda auto migration avtomatik olaraq məlumat bazası və seed data yaradacaq 
+#### 2.2. Migration-ların tətbiqi
+
+Proyekt run olduqda auto migration avtomatik olaraq məlumat bazası və seed data yaradacaq.
 
 #### 2.3. API-ni işə salın
 
@@ -84,18 +89,32 @@ Now listening on: https://localhost:7286
 Now listening on: http://localhost:5115
 ```
 
-> 📝 **Bu port nömrəsini yadda saxlayın** — Angular tərəfində lazım olacaq.
+> ⚠️ Port nömrələri (`7286`, `5115`) hər maşında fərqli ola bilər. Terminalda görünən portu yadda saxlayın — Angular tərəfində lazım olacaq.
+
+#### 2.4. Swagger — API Sənədləşməsi
+
+API işə düşdükdən sonra bütün endpointləri interaktiv şəkildə test etmək üçün Swagger UI-ə daxil ola bilərsiniz:
+
+```
+https://localhost:7286/swagger
+```
 
 ---
 
 ### 3. Frontend — Angular
 
-#### 3.1. Asılılıqları quraşdırın (əgər yoxdursa)
+#### 3.1. API URL-ini konfiqurasiya edin
 
-```bash
-cd client
-npm install
+`client/src/environments/environment.ts` faylını açın və `apiUrl` dəyərini backend-in işlədiyi porta uyğun dəyişin:
+
+```typescript
+export const environment = {
+  production: false,
+  apiUrl: 'https://localhost:7286/api'
+};
 ```
+
+> 💡 Port nömrəsi backend terminalında gördüyünüz nömrə ilə eyni olmalıdır.
 
 #### 3.2. Angular tətbiqini işə salın
 
@@ -136,6 +155,22 @@ Tətbiq 3 əsas bölmədən ibarətdir:
 
 ### ❌ Verilənlər bazası yaranmır
 SQL Server-in işlədiyini yoxlayın və `appsettings.json` faylındakı connection string-in düzgün olduğundan əmin olun.
+
+### ❌ Angular API-yə qoşula bilmir (CORS xətası)
+Backend-in `Program.cs` faylında CORS siyasətinin `http://localhost:4200` ünvanına icazə verdiyindən əmin olun:
+
+```csharp
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAngular", policy =>
+        policy.WithOrigins("http://localhost:4200")
+              .AllowAnyHeader()
+              .AllowAnyMethod());
+});
+```
+
+### ❌ Port uyğunsuzluğu
+Backend portu dəyişibsə `environment.ts` faylındakı `apiUrl`-i yeniləyin.
 
 ---
 
