@@ -51,7 +51,7 @@ npm install
 
 Aşağıdakı linki Visual Studio-da clone edin
 ```bash
-git clone https://github.com/fehminqurbanli/StudentExamManagementSystem.git
+https://github.com/fehminqurbanli/StudentExamManagementSystem.git
 ```
 
 #### 2.1. Verilənlər bazası bağlantısını konfiqurasiya edin
