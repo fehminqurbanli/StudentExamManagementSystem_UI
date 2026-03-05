@@ -1,63 +1,203 @@
-<<<<<<< HEAD
-# StudentExamDemoUi
+# 📚 Student Exam Demo
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.2.0.
+**Student Exam Demo** — orta məktəb şagirdlərinin imtahan nəticələrinin idarə edilməsi üçün hazırlanmış veb tətbiqidir.  
+Layihə **ASP.NET Core Web API** (backend) və **Angular** (frontend) texnologiyaları üzərində qurulmuşdur.
 
-## Development server
+---
 
-To start a local development server, run:
+## 🗂️ Layihə Strukturu
+
+```
+/
+├── StudentExamDemo.API/        → ASP.NET Core Web API (backend)
+├── StudentExamDemo.Application/→ Servis və DTO-lar
+├── StudentExamDemo.Domain/     → Entity-lər (modellər)
+├── StudentExamDemo.Infrastructure/ → DbContext, Migration-lar
+└── client/                     → Angular frontend
+```
+
+---
+
+## ⚙️ Tələblər
+
+Layihəni işlətməzdən əvvəl aşağıdakı proqramların quraşdırılmış olduğundan əmin olun:
+
+| Proqram | Versiya | Yükləmə linki |
+|---|---|---|
+| .NET SDK | 8.0+ | https://dotnet.microsoft.com/download |
+| Node.js | 18.0+ | https://nodejs.org |
+| Angular CLI | 17.0+ | `npm install -g @angular/cli` |
+| SQL Server | istənilən | https://www.microsoft.com/sql-server |
+| Git | istənilən | https://git-scm.com |
+
+---
+
+## 🚀 Quraşdırma və İşə Salma
+
+### 1. Frontend - Kodu Clone edin
+
+```bash
+git clone https://github.com/fehminqurbanli/StudentExamManagementSystem_UI.git
+cd student-exam-demo
+```
+
+---
+
+### 2. Backend — ASP.NET Core API
+
+```bash
+git clone https://github.com/fehminqurbanli/StudentExamManagementSystem.git
+cd student-exam-demo
+```
+
+#### 2.1. Verilənlər bazası bağlantısını konfiqurasiya edin
+
+`StudentExamDemo.API` qovluğundakı `appsettings.json` faylını açın və `ConnectionStrings` hissəsini öz SQL Server məlumatlarınıza uyğun dəyişin:
+
+```json
+{
+  "ConnectionStrings": {
+    "StudentExamConnection": "Server=localhost\\SQLEXPRESS;Database=StudentExamDemoDb;Trusted_Connection=True;TrustServerCertificate=True;"
+  }
+}
+```
+
+> 💡 `YOUR_SERVER_NAME` əvəzinə SQL Server adınızı yazın. Məsələn: `localhost\SQLEXPRESS` və ya `.\SQLEXPRESS`
+
+#### 2.2. Migration-ları tətbiq edin (verilənlər bazasını yaradın)
+
+```bash
+cd StudentExamDemo.WebAPI
+dotnet ef database update
+```
+
+> Əgər `dotnet ef` əmri tapılmırsa, əvvəlcə aşağıdakını icra edin:
+> ```bash
+> dotnet tool install --global dotnet-ef
+> ```
+
+#### 2.3. API-ni işə salın
+
+```bash
+dotnet run
+```
+
+API uğurla başladıqda terminaldə aşağıdakına bənzər bir çıxış görəcəksiniz:
+
+```
+Now listening on: https://localhost:7286
+Now listening on: http://localhost:5115
+```
+
+> 📝 **Bu port nömrəsini yadda saxlayın** — Angular tərəfində lazım olacaq.
+
+---
+
+### 3. Frontend — Angular
+
+#### 3.1. Asılılıqları quraşdırın
+
+```bash
+cd client
+npm install
+```
+
+#### 3.2. API URL-ini konfiqurasiya edin
+
+`src/environments/environment.ts` faylını açın və API portunuzu yazın:
+
+```typescript
+export const environment = {
+  production: false,
+  apiUrl: 'https://localhost:7286/api'  // ← öz port nömrənizi yazın
+};
+```
+
+#### 3.3. Angular tətbiqini işə salın
 
 ```bash
 ng serve
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+Tətbiq uğurla başladıqda brauzerdə aşağıdakı ünvana keçin:
 
-## Code scaffolding
-
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
-
-```bash
-ng generate component component-name
+```
+http://localhost:4200
 ```
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+---
 
-```bash
-ng generate --help
+## 🖥️ Tətbiqin İstifadəsi
+
+Tətbiq 3 əsas bölmədən ibarətdir:
+
+### 📖 Fənnlər (`/subjects`)
+- Yeni fənn əlavə etmək
+- Mövcud fənni redaktə etmək
+- Fənni silmək
+
+### 🎓 Şagirdlər (`/students`)
+- Yeni şagird qeydiyyatı
+- Şagird məlumatlarını yeniləmək
+- Şagirdi silmək
+
+### 📝 İmtahanlar (`/exams`)
+- İmtahan nəticəsi əlavə etmək (fənn və şagird seçilir)
+- İmtahan məlumatlarını yeniləmək
+- İmtahan qeydini silmək
+
+---
+
+## 🔧 Ümumi Problemlər və Həlləri
+
+### ❌ CORS xətası
+Angular-dan API-yə sorğu göndəriləndə CORS xətası görünürsə, `Program.cs` faylında CORS siyasətinin düzgün konfiqurasiya edildiyindən əmin olun:
+
+```csharp
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAngular", policy =>
+    {
+        policy.WithOrigins("http://localhost:4200")
+              .AllowAnyHeader()
+              .AllowAnyMethod();
+    });
+});
+
+app.UseCors("AllowAngular");
 ```
 
-## Building
-
-To build the project run:
-
+### ❌ `dotnet ef` əmri tapılmırsa
 ```bash
-ng build
+dotnet tool install --global dotnet-ef
 ```
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
-
+### ❌ `ng` əmri tapılmırsa
 ```bash
-ng test
+npm install -g @angular/cli
 ```
 
-## Running end-to-end tests
+### ❌ Verilənlər bazası yaranmır
+SQL Server-in işlədiyini yoxlayın və `appsettings.json` faylındakı connection string-in düzgün olduğundan əmin olun.
 
-For end-to-end (e2e) testing, run:
+### ❌ Port artıq istifadə olunur
+API fərqli portda başlayıbsa, `environment.ts` faylındakı `apiUrl`-i həmin porta uyğun yeniləyin.
 
-```bash
-ng e2e
-```
+---
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+## 🛠️ İstifadə Edilən Texnologiyalar
 
-## Additional Resources
+**Backend:**
+- ASP.NET Core 9 Web API
+- Entity Framework Core
+- AutoMapper
+- SQL Server
+- Repository Pattern / Service Layer
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
-=======
-# StudentExamManagementSystem_UI
->>>>>>> 196eac46dc8d7eed8127dca557ceafff157ec164
+**Frontend:**
+- Angular 17+
+- Angular Material
+- RxJS
+- TypeScript
+
+---
