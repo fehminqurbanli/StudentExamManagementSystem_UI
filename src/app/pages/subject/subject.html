@@ -1,6 +1,6 @@
 <mat-card>
   <mat-card-header>
-    <mat-icon mat-card-avatar color="primary">book</mat-icon>
+    <mat-icon mat-card-avatar>book</mat-icon>
     <mat-card-title>Dərslər</mat-card-title>
     <mat-card-subtitle>Dərs qeydiyyatı</mat-card-subtitle>
   </mat-card-header>
@@ -8,75 +8,75 @@
   <mat-card-content>
     <div style="display:flex; gap:12px; flex-wrap:wrap; margin:16px 0; align-items:center">
       <mat-form-field appearance="outline">
+        <mat-label>Id</mat-label>
+        <input matInput [(ngModel)]="new.id">
+      </mat-form-field> 
+      <mat-form-field appearance="outline">
         <mat-label>Kod (3 hərf)</mat-label>
-        <input matInput [(ngModel)]="new.code" maxlength="3" placeholder="MAT">
+        <input matInput [(ngModel)]="new.code" maxlength="3">
       </mat-form-field>
-
       <mat-form-field appearance="outline">
         <mat-label>Dərsin adı</mat-label>
-        <input matInput [(ngModel)]="new.name" placeholder="Riyaziyyat">
+        <input matInput [(ngModel)]="new.name">
       </mat-form-field>
-
       <mat-form-field appearance="outline" style="width:90px">
         <mat-label>Sinif</mat-label>
         <input matInput type="number" [(ngModel)]="new.class" min="1" max="11">
       </mat-form-field>
-
       <mat-form-field appearance="outline">
         <mat-label>Müəllim adı</mat-label>
         <input matInput [(ngModel)]="new.teacherName">
       </mat-form-field>
-
       <mat-form-field appearance="outline">
         <mat-label>Müəllim soyadı</mat-label>
         <input matInput [(ngModel)]="new.teacherSurname">
       </mat-form-field>
-
       <button mat-raised-button color="primary" (click)="add()" style="height:56px">
         <mat-icon>add</mat-icon> Əlavə Et
       </button>
     </div>
 
-    <table mat-table [dataSource]="subjects()" class="mat-elevation-z2" style="width:100%">
-      <ng-container matColumnDef="id">
-        <th mat-header-cell *matHeaderCellDef>Id</th>
-        <td mat-cell *matCellDef="let d"><strong>{{d.id}}</strong></td>
-      </ng-container>
-      <ng-container matColumnDef="code">
-        <th mat-header-cell *matHeaderCellDef>Kod</th>
-        <td mat-cell *matCellDef="let d"><strong>{{d.code}}</strong></td>
-      </ng-container>
-      <ng-container matColumnDef="name">
-        <th mat-header-cell *matHeaderCellDef>Dərsin Adı</th>
-        <td mat-cell *matCellDef="let d">{{d.name}}</td>
-      </ng-container>
-      <ng-container matColumnDef="class">
-        <th mat-header-cell *matHeaderCellDef>Sinif</th>
-        <td mat-cell *matCellDef="let d">{{d.class}}</td>
-      </ng-container>
-      <ng-container matColumnDef="teacherName">
-        <th mat-header-cell *matHeaderCellDef>Müəllim Adı</th>
-        <td mat-cell *matCellDef="let d">{{d.teacherName}}</td>
-      </ng-container>
-      <ng-container matColumnDef="teacherSurname">
-        <th mat-header-cell *matHeaderCellDef>Müəllim Soyadı</th>
-        <td mat-cell *matCellDef="let d">{{d.teacherSurname}}</td>
-      </ng-container>
-      <ng-container matColumnDef="emeliyyat">
-        <th mat-header-cell *matHeaderCellDef></th>
-        <td mat-cell *matCellDef="let d">
-          <button mat-icon-button color="warn" (click)="delete(d.id)" matTooltip="Sil">
-            <mat-icon>delete</mat-icon>
-          </button>
-        </td>
-      </ng-container>
+    @if (loading()) {
+      <div style="text-align:center; padding:24px">
+        <mat-spinner diameter="40" style="margin:auto"></mat-spinner>
+      </div>
+    } @else {
+      <table mat-table [dataSource]="subjects()" class="mat-elevation-z2" style="width:100%">
+        <ng-container matColumnDef="code">
+          <th mat-header-cell *matHeaderCellDef>Kod</th>
+          <td mat-cell *matCellDef="let d"><strong>{{d.code}}</strong></td>
+        </ng-container>
+        <ng-container matColumnDef="name">
+          <th mat-header-cell *matHeaderCellDef>Dərsin Adı</th>
+          <td mat-cell *matCellDef="let d">{{d.name}}</td>
+        </ng-container>
+        <ng-container matColumnDef="class">
+          <th mat-header-cell *matHeaderCellDef>Sinif</th>
+          <td mat-cell *matCellDef="let d">{{d.class}}</td>
+        </ng-container>
+        <ng-container matColumnDef="teacherName">
+          <th mat-header-cell *matHeaderCellDef>Müəllim Adı</th>
+          <td mat-cell *matCellDef="let d">{{d.teacherName}}</td>
+        </ng-container>
+        <ng-container matColumnDef="teacherSurname">
+          <th mat-header-cell *matHeaderCellDef>Müəllim Soyadı</th>
+          <td mat-cell *matCellDef="let d">{{d.teacherSurname}}</td>
+        </ng-container>
+        <ng-container matColumnDef="emeliyyat">
+          <th mat-header-cell *matHeaderCellDef></th>
+          <td mat-cell *matCellDef="let d">
+            <button mat-icon-button color="warn" (click)="delete(d.id)" matTooltip="Sil">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </td>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="columns"></tr>
+        <tr mat-row *matRowDef="let row; columns: columns"></tr>
+      </table>
 
-      <tr mat-header-row *matHeaderRowDef="columns"></tr>
-      <tr mat-row *matRowDef="let row; columns: columns"></tr>
-    </table>
-
-    @if (subjects().length === 0) {
-      <p style="text-align:center; color:gray; margin:24px">Hələ dərs əlavə edilməyib.</p>
+      @if (subjects().length === 0) {
+        <p style="text-align:center; color:gray; margin:24px">Hələ dərs əlavə edilməyib.</p>
+      }
     }
   </mat-card-content>
 </mat-card>

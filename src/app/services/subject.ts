@@ -1,21 +1,27 @@
-import { Injectable, signal } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
 import { Subject } from '../models/subject.model';
+import { environment } from '../../environments/environment';
 
 @Injectable({ providedIn: 'root' })
 export class SubjectService {
-  private subjects = signal<Subject[]>([]);
+  private http = inject(HttpClient);
+  private url = `${environment.apiUrl}/subjects`;
 
-  getAll() { return this.subjects(); }
-
-  add(subject: Subject) {
-    this.subjects.update(list => [...list, subject]);
+  getAll(): Observable<Subject[]> {
+    return this.http.get<Subject[]>(this.url);
   }
 
-  delete(id: number) {
-    this.subjects.update(list => list.filter(d => d.id !== id));
+  add(subject: Subject): Observable<Subject> {
+    return this.http.post<Subject>(this.url, subject);
   }
 
-  getById(id: number) {
-    return this.subjects().find(d => d.id === id);
+  delete(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.url}/${id}`);
+  }
+
+  getByKod(id: number): Observable<Subject> {
+    return this.http.get<Subject>(`${this.url}/${id}`);
   }
 }
