@@ -45,6 +45,12 @@ cd StudentExamManagementSystem_UI
 npm install
 ```
 
+Daha sonra aşağıdakı da quraşdırılacaq:
+
+```bash
+npm install -g @angular/cli
+```
+
 ---
 
 ### 2. Backend — ASP.NET Core API
