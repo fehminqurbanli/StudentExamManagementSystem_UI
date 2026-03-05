@@ -46,8 +46,7 @@ cd student-exam-demo
 
 ```bash
 git clone https://github.com/fehminqurbanli/StudentExamManagementSystem.git
-cd Backend
-cd StudentExamDemo.WebAPI
+cd student-exam-demo
 ```
 
 #### 2.1. Verilənlər bazası bağlantısını konfiqurasiya edin
@@ -64,17 +63,7 @@ cd StudentExamDemo.WebAPI
 
 > 💡 `YOUR_SERVER_NAME` əvəzinə SQL Server adınızı yazın. Məsələn: `localhost\SQLEXPRESS` və ya `.\SQLEXPRESS`
 
-#### 2.2. Migration-ları tətbiq edin (verilənlər bazasını yaradın)
-
-```bash
-cd StudentExamDemo.WebAPI
-dotnet ef database update
-```
-
-> Əgər `dotnet ef` əmri tapılmırsa, əvvəlcə aşağıdakını icra edin:
-> ```bash
-> dotnet tool install --global dotnet-ef
-> ```
+#### 2.2. Migration-ların tətbiqi -> Proyekt run olduqda auto migration avtomatik olaraq məlumat bazası və seed data yaradacaq 
 
 #### 2.3. API-ni işə salın
 
