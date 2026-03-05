@@ -39,16 +39,11 @@ Layihəni işlətməzdən əvvəl aşağıdakı proqramların quraşdırılmış
 git clone https://github.com/fehminqurbanli/StudentExamManagementSystem_UI.git
 cd StudentExamManagementSystem_UI
 ```
-Əgər kompüterə node.js quraşdırılmayıbsa https://nodejs.org/en/download yüklənməlidir. Daha sonra npm quraşdırılacaq:
-
-```bash
-npm install
-```
-
-Daha sonra aşağıdakı da quraşdırılacaq:
+Əgər kompüterə node.js quraşdırılmayıbsa https://nodejs.org/en/download yüklənməlidir. Daha sonra aşağıdakılar quraşdırılacaq:
 
 ```bash
 npm install -g @angular/cli
+npm install
 ```
 
 ---
