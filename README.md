@@ -84,7 +84,7 @@ Now listening on: http://localhost:5115
 
 ### 3. Frontend — Angular
 
-#### 3.1. Asılılıqları quraşdırın
+#### 3.1. Asılılıqları quraşdırın (əgər yoxdursa)
 
 ```bash
 cd client
