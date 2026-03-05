@@ -27,10 +27,10 @@ export class SubjectComponent implements OnInit {
   private subjectService = inject(SubjectService);
   private snack = inject(MatSnackBar);
 
-  columns = ['code', 'name', 'class', 'teacherName', 'teacherSurname'];
+  columns = ['code', 'name', 'class', 'teacherName', 'teacherSurname', 'actions'];
   subjects = signal<Subject[]>([]);
   loading = signal(false);
-  new: Subject = { id:0, code: '', name: '', class: 0, teacherName: '', teacherSurname: '' };
+  new: Subject = { code: '', name: '', class: 0, teacherName: '', teacherSurname: '' };
 
   ngOnInit() {
     this.load();

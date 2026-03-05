@@ -7,10 +7,10 @@
 
   <mat-card-content>
     <div style="display:flex; gap:12px; flex-wrap:wrap; margin:16px 0; align-items:center">
-      <mat-form-field appearance="outline">
+      <!-- <mat-form-field appearance="outline">
         <mat-label>Id</mat-label>
         <input matInput [(ngModel)]="new.id">
-      </mat-form-field> 
+      </mat-form-field>  -->
       <mat-form-field appearance="outline">
         <mat-label>Kod (3 hərf)</mat-label>
         <input matInput [(ngModel)]="new.code" maxlength="3">
@@ -62,10 +62,10 @@
           <th mat-header-cell *matHeaderCellDef>Müəllim Soyadı</th>
           <td mat-cell *matCellDef="let d">{{d.teacherSurname}}</td>
         </ng-container>
-        <ng-container matColumnDef="emeliyyat">
+        <ng-container matColumnDef="actions">
           <th mat-header-cell *matHeaderCellDef></th>
           <td mat-cell *matCellDef="let d">
-            <button mat-icon-button color="warn" (click)="delete(d.id)" matTooltip="Sil">
+            <button mat-icon-button color="warn" (click)="delete(d.id!)" matTooltip="Sil">
               <mat-icon>delete</mat-icon>
             </button>
           </td>
