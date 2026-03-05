@@ -46,7 +46,8 @@ cd student-exam-demo
 
 ```bash
 git clone https://github.com/fehminqurbanli/StudentExamManagementSystem.git
-cd student-exam-demo
+cd Backend
+cd StudentExamDemo.WebAPI
 ```
 
 #### 2.1. Verilənlər bazası bağlantısını konfiqurasiya edin
