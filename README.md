@@ -82,7 +82,16 @@ Now listening on: http://localhost:5115
 
 ---
 
-### 3. Frontend — Angular tətbiqini işə salın
+### 3. Frontend — Angular
+
+#### 3.1. Asılılıqları quraşdırın (əgər yoxdursa)
+
+```bash
+cd client
+npm install
+```
+
+#### 3.2. Angular tətbiqini işə salın
 
 ```bash
 ng serve
