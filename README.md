@@ -128,38 +128,8 @@ Tətbiq 3 əsas bölmədən ibarətdir:
 
 ## 🔧 Ümumi Problemlər və Həlləri
 
-### ❌ CORS xətası
-Angular-dan API-yə sorğu göndəriləndə CORS xətası görünürsə, `Program.cs` faylında CORS siyasətinin düzgün konfiqurasiya edildiyindən əmin olun:
-
-```csharp
-builder.Services.AddCors(options =>
-{
-    options.AddPolicy("AllowAngular", policy =>
-    {
-        policy.WithOrigins("http://localhost:4200")
-              .AllowAnyHeader()
-              .AllowAnyMethod();
-    });
-});
-
-app.UseCors("AllowAngular");
-```
-
-### ❌ `dotnet ef` əmri tapılmırsa
-```bash
-dotnet tool install --global dotnet-ef
-```
-
-### ❌ `ng` əmri tapılmırsa
-```bash
-npm install -g @angular/cli
-```
-
 ### ❌ Verilənlər bazası yaranmır
 SQL Server-in işlədiyini yoxlayın və `appsettings.json` faylındakı connection string-in düzgün olduğundan əmin olun.
-
-### ❌ Port artıq istifadə olunur
-API fərqli portda başlayıbsa, `environment.ts` faylındakı `apiUrl`-i həmin porta uyğun yeniləyin.
 
 ---
 
