@@ -82,27 +82,7 @@ Now listening on: http://localhost:5115
 
 ---
 
-### 3. Frontend — Angular
-
-#### 3.1. Asılılıqları quraşdırın (əgər yoxdursa)
-
-```bash
-cd client
-npm install
-```
-
-#### 3.2. API URL-ini konfiqurasiya edin
-
-`src/environments/environment.ts` faylını açın və API portunuzu yazın:
-
-```typescript
-export const environment = {
-  production: false,
-  apiUrl: 'https://localhost:7286/api'  // ← öz port nömrənizi yazın
-};
-```
-
-#### 3.3. Angular tətbiqini işə salın
+### 3. Frontend — Angular tətbiqini işə salın
 
 ```bash
 ng serve
