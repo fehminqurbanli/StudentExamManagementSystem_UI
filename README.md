@@ -96,7 +96,7 @@ Now listening on: http://localhost:5115
 API işə düşdükdən sonra bütün endpointləri interaktiv şəkildə test etmək üçün Swagger UI-ə daxil ola bilərsiniz:
 
 ```
-https://localhost:7286/swagger
+https://localhost:7286/index.html
 ```
 
 ---
