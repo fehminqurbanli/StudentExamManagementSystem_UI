@@ -181,8 +181,10 @@ Backend portu dəyişibsə `environment.ts` faylındakı `apiUrl`-i yeniləyin.
 - Entity Framework Core
 - AutoMapper
 - SQL Server
-- Repository Pattern / Service Layer
-
+- Repository Pattern — verilənlər bazası əməliyyatları üçün abstraksiya təbəqəsi
+- AutoMapper — entity və DTO-lar arasında avtomatik çevrilmə
+- Swagger / OpenAPI — API endpointlərinin avtomatik sənədləşdirilməsi
+  
 **Frontend:**
 - Angular 17+
 - Angular Material
